@@ -2,10 +2,11 @@ package redisdb
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-redis/redis/v8"
 	"github.com/sergiosegrera/covlog/db"
 	"github.com/sergiosegrera/covlog/models"
-	"time"
 )
 
 type RedisDB struct {
