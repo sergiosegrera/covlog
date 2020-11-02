@@ -1,13 +1,14 @@
 package main
 
 import (
-	"net/http"
 	"os"
 	"os/signal"
 
 	"github.com/kevinburke/twilio-go"
+	"github.com/sergiosegrera/covlog/config"
 	"github.com/sergiosegrera/covlog/db/redisdb"
 	"github.com/sergiosegrera/covlog/service"
+	"github.com/sergiosegrera/covlog/transports/http"
 	"go.uber.org/zap"
 )
 
@@ -27,15 +28,13 @@ func main() {
 		logger.Fatal("Error connecting to db")
 	}
 
-	tc, err := twilio.NewClient(conf.TwilioId, conf.TwilioToken, nil)
-	if err != nil {
-		logger.Fatal("Error creating twilio client")
-	}
+	// TODO: Check to see if connection fails
+	tc := twilio.NewClient(conf.TwilioId, conf.TwilioToken, nil)
 
 	covlogService := &service.CovlogService{
 		DB:     db,
-		tc:     tc,
-		logger: logger,
+		TC:     tc,
+		Logger: logger,
 	}
 
 	go func() {

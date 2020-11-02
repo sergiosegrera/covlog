@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v8"
-	"github.com/sergiosegrera/covlog/db"
 	"github.com/sergiosegrera/covlog/config"
+	"github.com/sergiosegrera/covlog/db"
 	"github.com/sergiosegrera/covlog/models"
 )
 
@@ -37,4 +37,10 @@ func (r *RedisDB) SavePerson(ctx context.Context, p models.Person) error {
 	err := r.client.Set(ctx, "phone:"+p.Phone, p.Name, 14*24*time.Hour).Err()
 
 	return err
+}
+
+func (r *RedisDB) GetPersons(ctx context.Context) ([]models.Person, error) {
+	// TODO
+
+	return nil, nil
 }

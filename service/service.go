@@ -3,11 +3,12 @@ package service
 import (
 	"context"
 	"errors"
+	"time"
+
 	"github.com/kevinburke/twilio-go"
 	"github.com/sergiosegrera/covlog/db"
 	"github.com/sergiosegrera/covlog/models"
 	"go.uber.org/zap"
-	"time"
 )
 
 type Service interface {
@@ -19,13 +20,13 @@ type Service interface {
 
 type CovlogService struct {
 	DB     db.DB
-	tc     *twilio.Client
-	logger *zap.Logger
+	TC     *twilio.Client
+	Logger *zap.Logger
 }
 
 func (s *CovlogService) CreatePerson(ctx context.Context, p models.Person) (err error) {
 	defer func(begin time.Time) {
-		s.logger.Info(
+		s.Logger.Info(
 			"covlog",
 			zap.String("method", "createperson"),
 			zap.String("name", p.Name),
@@ -41,7 +42,7 @@ func (s *CovlogService) CreatePerson(ctx context.Context, p models.Person) (err 
 	}
 
 	// TODO: Send confirmation sms.
-	_, err = s.tc.Messages.SendMessage("from", p.Phone, "Your number has been logged! It will automatically be deleted in 14 days.", nil)
+	_, err = s.TC.Messages.SendMessage("from", p.Phone, "Your number has been logged! It will automatically be deleted in 14 days.", nil)
 
 	if err != nil {
 		return ErrSendingMessage
@@ -52,7 +53,7 @@ func (s *CovlogService) CreatePerson(ctx context.Context, p models.Person) (err 
 
 func (s *CovlogService) GetPersons(ctx context.Context) (persons []models.Person, err error) {
 	defer func(begin time.Time) {
-		s.logger.Info(
+		s.Logger.Info(
 			"covlog",
 			zap.String("method", "getpersons"),
 			zap.NamedError("err", err),

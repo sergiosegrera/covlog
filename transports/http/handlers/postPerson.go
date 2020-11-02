@@ -23,11 +23,11 @@ func MakePostPersonHandler(svc service.Service) func(w http.ResponseWriter, r *h
 		var person models.Person
 		// TODO: Verify name
 		person.Name = request.Body
-		person.Phone = request.From
+		person.Phone = request.From.Friendly()
 		person.Date = time.Now()
 
 		// TODO: Context timeout
-		err := svc.CreatePerson(context.Background(), person)
+		err = svc.CreatePerson(context.Background(), person)
 
 		// TODO: Better errors
 		if err != nil {

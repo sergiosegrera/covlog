@@ -1,11 +1,12 @@
 package http
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/sergiosegrera/covlog/config"
 	"github.com/sergiosegrera/covlog/service"
 	"github.com/sergiosegrera/covlog/transports/http/handlers"
 )
