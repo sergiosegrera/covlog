@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"fmt"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -9,7 +10,7 @@ import (
 	"github.com/sergiosegrera/covlog/transports/http/handlers"
 )
 
-func Serve(svc service.Service) error {
+func Serve(svc service.Service, conf *config.Config) error {
 	router := chi.NewRouter()
 	router.Use(middleware.Compress(5, "gzip"))
 
@@ -20,5 +21,5 @@ func Serve(svc service.Service) error {
 	// router.Get("/admin")
 	// router.Get("/frontend")
 
-	return http.ListenAndServe(":8080", router)
+	return http.ListenAndServe(fmt.Sprintf(":%v", conf.HttpPort), router)
 }

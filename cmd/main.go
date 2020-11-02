@@ -12,6 +12,9 @@ import (
 )
 
 func main() {
+	// Load config
+	conf := config.New()
+
 	// Start logger
 	logger, err := zap.NewDevelopment()
 	if err != nil {
@@ -24,7 +27,7 @@ func main() {
 		logger.Fatal("Error connecting to db")
 	}
 
-	tc, err := twilio.NewClient("", "", nil)
+	tc, err := twilio.NewClient(conf.TwilioId, conf.TwilioToken, nil)
 	if err != nil {
 		logger.Fatal("Error creating twilio client")
 	}
@@ -36,8 +39,8 @@ func main() {
 	}
 
 	go func() {
-		logger.Info("Starting the http server", zap.String("port", "8080"))
-		err := http.Serve(covlogService)
+		logger.Info("Starting the http server", zap.String("port", conf.HttpPort))
+		err := http.Serve(covlogService, conf)
 		if err != nil {
 			logger.Error("Http server panic", zap.String("err", err.Error()))
 			os.Exit(1)

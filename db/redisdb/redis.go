@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-redis/redis/v8"
 	"github.com/sergiosegrera/covlog/db"
+	"github.com/sergiosegrera/covlog/config"
 	"github.com/sergiosegrera/covlog/models"
 )
 
@@ -13,10 +14,10 @@ type RedisDB struct {
 	client *redis.Client
 }
 
-func New(address string, password string) (db.DB, error) {
+func New(conf *config.Config) (db.DB, error) {
 	client := redis.NewClient(&redis.Options{
-		Addr:     address,
-		Password: password,
+		Addr:     conf.RedisAddress,
+		Password: conf.RedisPassword,
 		DB:       0,
 	})
 
