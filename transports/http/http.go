@@ -19,6 +19,8 @@ func Serve(svc service.Service, conf *config.Config) error {
 	router.Post("/person", handlers.MakePostPersonHandler(svc))
 	router.Get("/persons", handlers.MakeGetPersonsHandler(svc))
 
+	router.Post("/message", handlers.MakePostMessageHandler(svc))
+
 	// TODO: Create csv :o
 	// router.Get("/download")
 

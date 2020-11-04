@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 
@@ -15,6 +16,7 @@ import (
 func main() {
 	// Load config
 	conf := config.New()
+	fmt.Println(conf)
 
 	// Start logger
 	logger, err := zap.NewDevelopment()
@@ -32,9 +34,10 @@ func main() {
 	tc := twilio.NewClient(conf.TwilioId, conf.TwilioToken, nil)
 
 	covlogService := &service.CovlogService{
-		DB:     db,
-		TC:     tc,
-		Logger: logger,
+		DB:        db,
+		TC:        tc,
+		Logger:    logger,
+		FromPhone: conf.TwilioPhone,
 	}
 
 	go func() {

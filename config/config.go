@@ -3,20 +3,22 @@ package config
 import "os"
 
 type Config struct {
-	HttpPort string
-	RedisAddress string
+	HttpPort      string
+	RedisAddress  string
 	RedisPassword string
-	TwilioId string
-	TwilioToken string
+	TwilioId      string
+	TwilioToken   string
+	TwilioPhone   string
 }
 
 func New() *Config {
 	return &Config{
-		HttpPort: ParseEnv("HTTP_PORT", "8080"),
-		RedisAddress: ParseEnv("REDIS_ADDRESS", "redis:6379"),
+		HttpPort:      ParseEnv("HTTP_PORT", "8080"),
+		RedisAddress:  ParseEnv("REDIS_ADDRESS", "redis:6379"),
 		RedisPassword: ParseEnv("REDIS_PASSWORD", ""),
-		TwilioId: ParseEnv("TWILIO_ID", ""),
-		TwilioToken: ParseEnv("TWILIO_TOKEN", ""),
+		TwilioId:      ParseEnv("TWILIO_ID", ""),
+		TwilioToken:   ParseEnv("TWILIO_TOKEN", ""),
+		TwilioPhone:   ParseEnv("TWILIO_PHONE", ""),
 	}
 }
 

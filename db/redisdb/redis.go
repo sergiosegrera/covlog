@@ -2,7 +2,6 @@ package redisdb
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/gomodule/redigo/redis"
 	"github.com/sergiosegrera/covlog/config"
@@ -47,8 +46,7 @@ func (r *RedisDB) GetPersons(ctx context.Context) ([]models.Person, error) {
 		return nil, err
 	}
 
-	iter, _ := redis.Int(values[0], nil)
-	fmt.Println(iter)
+	// iter, _ := redis.Int(values[0], nil)
 	phones, _ := redis.Strings(values[1], nil)
 
 	persons := []models.Person{}
