@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/kevinburke/twilio-go"
 	"github.com/sergiosegrera/covlog/models"
@@ -24,7 +23,6 @@ func MakePostPersonHandler(svc service.Service) func(w http.ResponseWriter, r *h
 		// TODO: Verify name
 		person.Name = request.Body
 		person.Phone = request.From.Friendly()
-		person.Date = time.Now()
 
 		// TODO: Context timeout
 		err = svc.CreatePerson(context.Background(), person)

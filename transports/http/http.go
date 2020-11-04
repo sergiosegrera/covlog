@@ -16,8 +16,10 @@ func Serve(svc service.Service, conf *config.Config) error {
 	router.Use(middleware.Compress(5, "gzip"))
 
 	router.Post("/person", handlers.MakePostPersonHandler(svc))
-	// router.Get("/persons")
-	// router.Post("/message")
+	router.Get("/persons", handlers.MakeGetPersonsHandler(svc))
+
+	// TODO: Create csv :o
+	// router.Get("/download")
 
 	// router.Get("/admin")
 	// router.Get("/frontend")

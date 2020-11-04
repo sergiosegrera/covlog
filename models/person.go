@@ -1,10 +1,7 @@
 package models
 
-import "time"
-
 type Person struct {
-	Name    string    `json:"name"`
-	Phone   string    `json:"phone"`
-	Date    time.Time `json:"date"`
-	Expires time.Time `json:"expires"`
+	Name  string `json:"name"`
+	Phone string `json:"phone"`
+	TTL   int    `json:"ttl"`
 }
