@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/kevinburke/twilio-go"
@@ -41,13 +42,6 @@ func (s *CovlogService) CreatePerson(ctx context.Context, p models.Person) (err 
 		return ErrDatabase
 	}
 
-	// TODO: Send confirmation sms.
-	_, err = s.TC.Messages.SendMessage("from", p.Phone, "Your number has been logged! It will automatically be deleted in 14 days.", nil)
-
-	if err != nil {
-		return ErrSendingMessage
-	}
-
 	return err
 }
 
@@ -70,14 +64,29 @@ func (s *CovlogService) GetPersons(ctx context.Context) (persons []models.Person
 }
 
 func (s *CovlogService) SendMessages(ctx context.Context, m string) (err error) {
-	// TODO: logging.
+	// TODO: Log total sent count
+	defer func(begin time.Time) {
+		s.Logger.Info(
+			"covlog",
+			zap.String("method", "sendmessages"),
+			zap.NamedError("err", err),
+			zap.Duration("took", time.Since(begin)),
+		)
+	}(time.Now())
 
-	_, err = s.DB.GetPersons(ctx)
+	// TODO: This is not scalable possibly use chanels?
+	persons, err := s.DB.GetPersons(ctx)
 	if err != nil {
 		return ErrDatabase
 	}
 
 	// TODO: Loop persons and send warning sms.
+	for _, person := range persons {
+		_, err := s.TC.Messages.SendMessage("", person.Phone, m, nil)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+	}
 
 	return nil
 }

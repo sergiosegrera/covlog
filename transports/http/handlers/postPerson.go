@@ -2,27 +2,24 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 
-	"github.com/kevinburke/twilio-go"
 	"github.com/sergiosegrera/covlog/models"
 	"github.com/sergiosegrera/covlog/service"
 )
 
 func MakePostPersonHandler(svc service.Service) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var request twilio.Message
-		err := json.NewDecoder(r.Body).Decode(&request)
+		err := r.ParseForm()
 		if err != nil {
-			JSON(w, 400, message{"error": "Invalid request, failed to decode message"})
+			TWIML(w, 400, "Failed to parse form")
 			return
 		}
 
 		var person models.Person
 		// TODO: Verify name
-		person.Name = request.Body
-		person.Phone = request.From.Friendly()
+		person.Name = r.Form.Get("Body")
+		person.Phone = r.Form.Get("From")
 
 		// TODO: Context timeout
 		err = svc.CreatePerson(context.Background(), person)

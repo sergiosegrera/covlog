@@ -14,6 +14,7 @@ import (
 func Serve(svc service.Service, conf *config.Config) error {
 	router := chi.NewRouter()
 	router.Use(middleware.Compress(5, "gzip"))
+	router.Use(middleware.Logger)
 
 	router.Post("/person", handlers.MakePostPersonHandler(svc))
 	router.Get("/persons", handlers.MakeGetPersonsHandler(svc))
